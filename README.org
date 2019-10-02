@@ -1,0 +1,10 @@
+* Todo
+** DONE Basic Settings
+CLOSED: [2019-10-02 Wed 19:31]
+** TODO Ammo
+** TODO Infantry Weapons
+** TODO Infantry Optics
+** TODO Infantry Armor
+** TODO Infantry Types
+** TODO Vehicle Weapons
+** TODO Vehicle Armor

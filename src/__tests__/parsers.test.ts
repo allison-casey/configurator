@@ -16,7 +16,6 @@ const test_settings: Parsers.BasicSetting[] = [
 
 
 test('Parse Basic Settings', () => {
-    expect(Parsers.parseBasicSettings).toBeDefined();
     expect(Parsers.parseBasicSettings(test_settings)).toEqual([
         "Class CfgPatches {",
         "Class A3_Configurator {",
