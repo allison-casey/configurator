@@ -1,5 +1,5 @@
 
-namespace Utils {
+export namespace Utils {
 
     export const fillArray = <T>(n: number, value: T): T[] => {
         const arr: T[] = [];
