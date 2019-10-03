@@ -1,6 +1,6 @@
 * Todo
  - [X] Basic Settings
- - [ ] Ammo
+ - [X] Ammo
  - [ ] Infantry Weapons
  - [ ] Infantry Optics
  - [ ] Infantry Armor
