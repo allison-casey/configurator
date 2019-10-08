@@ -33,6 +33,7 @@ test("Infantry Optics", () => {
       "",
       ""
     ],
+    ["SMA", "SMA", "SMA", "SMA", ""],
     [
       "SMA_ELCAN_SPECTER",
       "ItemCore",
