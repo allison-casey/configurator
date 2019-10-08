@@ -2,7 +2,7 @@
  - [X] Basic Settings
  - [X] Ammo
  - [X] Infantry Weapons
- - [ ] Infantry Optics
+ - [X] Infantry Optics
  - [ ] Infantry Armor
  - [ ] Infantry Types
  - [ ] Vehicle Weapons
