@@ -97,7 +97,7 @@ export namespace Parsers {
       return out;
     };
 
-    const records = rows.map(toRecord);
+    const records = rows.filter(row => row[5]).map(toRecord);
     return records.reduce<string[]>(
       (accum: string[], curr: InfantryOptic) => [
         ...accum,
