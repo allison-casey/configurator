@@ -3,7 +3,7 @@
  - [X] Ammo
  - [X] Infantry Weapons
  - [X] Infantry Optics
- - [ ] Infantry Armor
+ - [X] Infantry Armor
  - [ ] Infantry Types
  - [ ] Vehicle Weapons
  - [ ] Vehicle Armor
