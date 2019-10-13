@@ -4,6 +4,6 @@
  - [X] Infantry Weapons
  - [X] Infantry Optics
  - [X] Infantry Armor
- - [ ] Infantry Types
+ - [X] Infantry Types
  - [ ] Vehicle Weapons
  - [ ] Vehicle Armor
