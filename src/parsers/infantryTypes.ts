@@ -1,3 +1,5 @@
+import {Utils} from '../utils'
+
 interface HitpointsCategory {
   armor?: string;
   passThrough?: string;
@@ -63,23 +65,6 @@ export namespace Parsers {
     soldierHitpoints: string[][],
     rows: string[][]
   ): string[] => {
-    const toBoolean = (str: string): boolean =>
-      str === "TRUE" || str === "true" ? true : false;
-
-    const renderClass = (
-      classname: string,
-      base?: string,
-      ...args: string[]
-    ): string[] => {
-      const out: string[] = [];
-      out.push(`Class ${classname} ` + (base ? `: ${base} {` : "{"));
-      out.push(...args);
-      out.push("};");
-      return out;
-    };
-
-    const optionalSpread = (condition: any, content: any) =>
-      condition && content;
 
     const toHitpointsCategory = (row: string[]): HitpointsCategory =>
       ({
@@ -100,26 +85,26 @@ export namespace Parsers {
       classname: row[0],
       base: row[1],
       _type: row[2],
-      minFOV: toBoolean(row[3]),
-      initFOV: toBoolean(row[4]),
-      maxFOV: toBoolean(row[5]),
-      HitFace: toBoolean(row[6]),
-      "HitNeck: HitFace": toBoolean(row[7]),
-      "HitHead: HitNeck": toBoolean(row[8]),
-      "HitPelvis: HitHead": toBoolean(row[9]),
-      "HitAbdomen: HitPelvis": toBoolean(row[10]),
-      "HitDiaphragm: HitAbdomen": toBoolean(row[11]),
-      "HitChest: HitDiaphragm": toBoolean(row[12]),
-      "HitBody: HitChest": toBoolean(row[13]),
-      "HitArms: HitBody": toBoolean(row[14]),
-      "HitHands: HitArms": toBoolean(row[15]),
-      "HitLegs: HitHands": toBoolean(row[16]),
-      "Incapacitated: HitLegs": toBoolean(row[17]),
-      armor: toBoolean(row[18]),
-      armorStructural: toBoolean(row[19]),
-      explosionShielding: toBoolean(row[20]),
-      minTotalDamageThreshold: toBoolean(row[21]),
-      impactDamageMultiplier: toBoolean(row[22])
+      minFOV: Utils.toBoolean(row[3]),
+      initFOV: Utils.toBoolean(row[4]),
+      maxFOV: Utils.toBoolean(row[5]),
+      HitFace: Utils.toBoolean(row[6]),
+      "HitNeck: HitFace": Utils.toBoolean(row[7]),
+      "HitHead: HitNeck": Utils.toBoolean(row[8]),
+      "HitPelvis: HitHead": Utils.toBoolean(row[9]),
+      "HitAbdomen: HitPelvis": Utils.toBoolean(row[10]),
+      "HitDiaphragm: HitAbdomen": Utils.toBoolean(row[11]),
+      "HitChest: HitDiaphragm": Utils.toBoolean(row[12]),
+      "HitBody: HitChest": Utils.toBoolean(row[13]),
+      "HitArms: HitBody": Utils.toBoolean(row[14]),
+      "HitHands: HitArms": Utils.toBoolean(row[15]),
+      "HitLegs: HitHands": Utils.toBoolean(row[16]),
+      "Incapacitated: HitLegs": Utils.toBoolean(row[17]),
+      armor: Utils.toBoolean(row[18]),
+      armorStructural: Utils.toBoolean(row[19]),
+      explosionShielding: Utils.toBoolean(row[20]),
+      minTotalDamageThreshold: Utils.toBoolean(row[21]),
+      impactDamageMultiplier: Utils.toBoolean(row[22])
     });
 
 
@@ -146,7 +131,7 @@ export namespace Parsers {
       return out;
     };
 
-    const renderType = (
+    const renderRecord = (
       hitpoints: SoldierHitpoints,
       record: InfantryType
     ): string[] => {
@@ -157,16 +142,16 @@ export namespace Parsers {
       ): string[] =>
         {
         return hitpoints[key] && record[key]
-          ? renderClass(
+          ? Utils.renderClass(
             key,
             undefined,
             ...renderHitpointsCategory(hitpoints[key])
           )
-          : renderClass(key);
+          : Utils.renderClass(key);
       }
 
       const viewPilot: string[] = hitpoints["viewPilot"]
-        ? renderClass(
+        ? Utils.renderClass(
             "ViewPilot",
             "ViewPilot",
             ...renderHitpointsCategory(hitpoints["viewPilot"])
@@ -194,20 +179,28 @@ export namespace Parsers {
         []
       );
 
-      const out: string[] = renderClass(
+      const out: string[] = Utils.renderClass(
         record.classname,
         record.base,
-        ...optionalSpread(
+        ...Utils.optionalSpread(
           hitpoints["Overall"],
           renderHitpointsCategory(hitpoints["Overall"])
         ),
         ...viewPilot,
-        ...renderClass("Hitpoints", undefined, ...hitpointsClasses)
+        ...Utils.renderClass("Hitpoints", undefined, ...hitpointsClasses)
       );
       return out;
     };
 
 
-    return renderType(hitpoints, toRecord(rows[0]));
+    const records: InfantryType[] = rows.map(toRecord)
+
+    return records.reduce<string[]>(
+      (accum: string[], curr: InfantryType) => [
+        ...accum,
+        ...renderRecord(hitpoints, curr)
+      ],
+      []
+    );
   };
 }

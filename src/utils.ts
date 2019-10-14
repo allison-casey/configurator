@@ -13,4 +13,22 @@ export namespace Utils {
 
   export const capitalize = (str: string) =>
     str[0].toUpperCase() + str.substr(1).toLowerCase();
+
+  export const toBoolean = (str: string): boolean =>
+    str === "TRUE" || str === "true" ? true : false;
+
+  export const renderClass = (
+    classname: string,
+    base?: string,
+    ...args: string[]
+  ): string[] => {
+    const out: string[] = [];
+    out.push(`Class ${classname} ` + (base ? `: ${base} {` : "{"));
+    out.push(...args);
+    out.push("};");
+    return out;
+  };
+
+  export const optionalSpread = (condition: any, content: any) =>
+    condition && content;
 }
