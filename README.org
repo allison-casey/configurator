@@ -5,5 +5,12 @@
  - [X] Infantry Optics
  - [X] Infantry Armor
  - [X] Infantry Types
- - [ ] Vehicle Weapons
+ - [X] Vehicle Weapons
  - [ ] Vehicle Armor
+
+* Notes
+
+** Vehicle Weapons
+   Vehicle Weapons with multiple ammo modes requires
+   classname to be non empty to be able to key off of
+   when parsing.
