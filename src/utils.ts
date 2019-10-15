@@ -31,4 +31,11 @@ export namespace Utils {
 
   export const optionalSpread = (condition: any, content: any) =>
     condition && content;
+
+  export const renderProperties = (keys: string[], record: any): string[] =>
+    keys.reduce<string[]>(
+    (accum: string[], key: string) =>
+      record[key] ? [...accum, `${key}=${record[key]};`] : accum,
+    []
+  );
 }

@@ -25,12 +25,6 @@ interface VehicleWeapons {
 
 export namespace Parsers {
   export const parseVehicleWeapons = (rows: string[][]): string[] => {
-    const renderProperties = (keys: string[], record: any): string[] =>
-      keys.reduce<string[]>(
-        (accum: string[], key: string) =>
-          record[key] ? [...accum, `${key}=${record[key]};`] : accum,
-        []
-      );
 
     const toFireMode = (start: number, row: string[]): FireMode => ({
       modeName: row[start],
@@ -57,7 +51,7 @@ export namespace Parsers {
       Utils.renderClass(
         record.modeName,
         undefined,
-        ...renderProperties(
+        ...Utils.renderProperties(
           [
             "reloadTime",
             "dispersion",
@@ -71,7 +65,7 @@ export namespace Parsers {
 
     const renderRecord = (record: VehicleWeapons): string[] => {
       return [
-        ...renderProperties(
+        ...Utils.renderProperties(
           ["reloadTime", "magazineReloadTime", "dispersion"],
           record
         ),
