@@ -1,3 +1,6 @@
+/// <reference path="./ammo.ts" />
+/// <reference path="./basic.ts" />
+
 import { Utils } from "../utils";
 
 export namespace Parsers {

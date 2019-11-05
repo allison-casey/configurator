@@ -1,5 +1,6 @@
-import { Parsers } from "../infantryWeapons";
-test("Parse Basic Settings", () => {
+import {Parsers} from '../infantryWeapons'
+
+test("Parse Infantry Weapons", () => {
   const data: string[][] = [
     [
       "arifle_MX_F",

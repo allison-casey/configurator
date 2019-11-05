@@ -1,5 +1,6 @@
+/// <reference path="./ammo.ts" />
+
 import { Utils } from "../utils";
-import { forOfStatement } from "@babel/types";
 
 export namespace Parsers {
   export type BasicSetting = [string, string];

@@ -1,4 +1,4 @@
-import { Parsers } from "../infantryTypes";
+import {Parsers} from '../infantryTypes'
 
 test("Infantry Types", () => {
   const soldierHitpoints: string[][] = [
