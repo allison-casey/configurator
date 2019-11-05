@@ -1,4 +1,4 @@
-import { Parsers } from "../basic";
+import {Parsers} from '../basic'
 
 test("Parse Basic Settings", () => {
   const test_basic_settings: Parsers.BasicSetting[] = [

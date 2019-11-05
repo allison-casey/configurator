@@ -1,4 +1,4 @@
-import { Parsers } from "../infantryOptics";
+import {Parsers} from '../infantryOptics'
 
 test("Infantry Optics", () => {
   const data: string[][] = [
@@ -66,6 +66,7 @@ test("Infantry Optics", () => {
       ""
     ]
   ];
+
   expect(Parsers.parseInfantryOptics(data)).toEqual([
     "Class optic_Arco: ItemCore {",
     "displayTitle='ARCO';",

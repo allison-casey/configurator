@@ -1,4 +1,4 @@
-import { Parsers } from "../vehicleWeapons";
+import {Parsers} from '../vehicleWeapons'
 
 test("Vehicle Weapons", () => {
   const data: string[][] = [
