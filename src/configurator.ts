@@ -103,7 +103,7 @@ function main() {
     ...Utils.renderClass("CfgRecoils", undefined, ...parsedInfantryWeapons.recoils),
     ...Utils.renderClass("CfgWeapons",
                          undefined,
-                         cfgWeaponsBaseClasses,
+                         ...cfgWeaponsBaseClasses.split("\n"),
                          ...parsedInfantryWeapons.weapons,
                          ...parsedInfantryOptics,
                          ...parsedVehicleWeapons),

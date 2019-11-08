@@ -36,9 +36,7 @@ export namespace Parsers {
   }
 
 
-  const cfgRecoilsBaseClasses = `
-  class Default;
-  `
+  const cfgRecoilsBaseClasses: string = "class Default;"
 
   export const parseInfantryWeapons = (
     rows: string[][]
