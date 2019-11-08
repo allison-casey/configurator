@@ -81,7 +81,7 @@ export namespace Parsers {
 
     const renderWeapon = (weapon: InfantryWeapon): string[] => {
       const settings: string[] = [];
-      settings.push(`Class ${weapon.classname}: ${weapon.base} {`);
+      settings.push(`class ${weapon.classname}: ${weapon.base} {`);
       for (let key in weapon.setting) {
         settings.push(
           key == "recoil"
@@ -92,7 +92,7 @@ export namespace Parsers {
 
       const single = weapon.single
         ? [
-            `Class Single: ${weapon.single.base} {`,
+            `class Single: ${weapon.single.base} {`,
             `dispersion=${weapon.single.dispersion};`,
             `reloadTime=${weapon.single.reloadTime};`,
             "};"
@@ -101,7 +101,7 @@ export namespace Parsers {
 
       const auto = weapon.auto
         ? [
-            `Class FullAuto: ${weapon.auto.base} {`,
+            `class FullAuto: ${weapon.auto.base} {`,
             `dispersion=${weapon.auto.dispersion};`,
             `reloadTime=${weapon.auto.reloadTime};`,
             "};"
@@ -110,7 +110,7 @@ export namespace Parsers {
 
       const burst = weapon.burst
         ? [
-            `Class Burst: ${weapon.burst.base} {`,
+            `class Burst: ${weapon.burst.base} {`,
             `dispersion=${weapon.burst.dispersion};`,
             `reloadTime=${weapon.burst.reloadTime};`,
             "};"
@@ -122,7 +122,7 @@ export namespace Parsers {
 
     const renderRecoil = (weapon: InfantryWeapon): string[] => {
       const out: string[] = [];
-      out.push(`Class ${weapon.setting.recoil}: Default {`);
+      out.push(`class ${weapon.setting.recoil}: Default {`);
       out.push(`muzzleOuter[]={${weapon.recoil.muzzleOuter.join(", ")}};`);
       out.push(`permanent=${weapon.recoil.permanent}`);
       out.push(`temporary=${weapon.recoil.temporary}`);

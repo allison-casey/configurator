@@ -15,16 +15,16 @@ test("Parse Basic Settings", () => {
     ["StaminaRestoration", "10"]
   ];
   expect(Parsers.parseBasicSettings(test_basic_settings)).toEqual([
-    "Class CfgPatches {",
-    "Class A3_Configurator {",
+    "class CfgPatches {",
+    "class A3_Configurator {",
     "units[] = {};",
     "weapons[] = {};",
     "};",
-    "Class A_Class {",
+    "class A_Class {",
     "something[] = {};",
     "};",
     "};",
-    "Class CfgMovesFatigue {",
+    "class CfgMovesFatigue {",
     "StaminaDuration = 60;",
     "StaminaRestoration = 10;",
     "};"

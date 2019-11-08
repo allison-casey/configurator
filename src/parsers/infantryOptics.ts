@@ -60,7 +60,7 @@ export namespace Parsers {
       const renderMode = (mode: OpticMode | undefined): string[] => {
         return mode
           ? [
-              `Class ${mode.classname} ` +
+              `class ${mode.classname} ` +
                 (mode.base ? `: ${mode.base} {` : "{"),
               `minFOV=${mode.minFOV}`,
               `initFOV=${mode.initFOV}`,
@@ -71,10 +71,10 @@ export namespace Parsers {
       };
 
       let out: string[] = [];
-      out.push(`Class ${record.classname}: ${record.base} {`);
+      out.push(`class ${record.classname}: ${record.base} {`);
       out.push(`displayTitle='${record.displayTitle}';`);
       out.push(`descriptionShort='${record.descriptionShort}';`);
-      out.push("Class ItemInfo: InventoryOpticsItem_Base_F {");
+      out.push("class ItemInfo: InventoryOpticsItem_Base_F {");
 
       out = [...out, ...(record.mass ? [`mass=${record.mass};`] : [])];
       out = [...out, ...(record.inertia ? [`inertia=${record.inertia};`] : [])];
@@ -85,7 +85,7 @@ export namespace Parsers {
 
       out = [
         ...out,
-        "Class OpticsModes {",
+        "class OpticsModes {",
         ...modeOne,
         ...modeTwo,
         ...modeThree,

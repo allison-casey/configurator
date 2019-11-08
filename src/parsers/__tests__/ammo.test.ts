@@ -42,8 +42,8 @@ test("Parse Ammo Settings", () => {
     ]
   ];
     expect(Parsers.parseAmmoSettings(settings)).toEqual([
-        "Class CfgAmmo {",
-        "Class B_19mm_HE : BulletBase {",
+        "class CfgAmmo {",
+        "class B_19mm_HE : BulletBase {",
         "hit = 20.0;",
         "indirectHit = 6.0;",
         "indirectHitRange = 2.0;",
@@ -53,7 +53,7 @@ test("Parse Ammo Settings", () => {
         "suppressionRadiusBulletClose = 10;",
         "suppressionRadiusHit = 14;",
         "};",
-        "Class B_30mm_APFSDS : B_30mm_AP {",
+        "class B_30mm_APFSDS : B_30mm_AP {",
         "hit = 120.0;",
         "indirectHit = 8.0;",
         "indirectHitRange = 0.2;",
