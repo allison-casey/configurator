@@ -67,11 +67,6 @@ class Put: Default
 };
 `
 
-const cfgPatchesBaseClasses = `
-class Mode_SemiAuto {};
-class Mode_Burst: Mode_SemiAuto {};
-class Mode_FullAuto: Mode_SemiAuto {};
-`
 
 
 const getNamedRange = (name: string, spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet) =>
