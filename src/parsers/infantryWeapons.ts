@@ -35,6 +35,11 @@ export namespace Parsers {
     };
   }
 
+
+  const cfgRecoilsBaseClasses = `
+  class Default;
+  `
+
   export const parseInfantryWeapons = (
     rows: string[][]
   ): { weapons: string[]; recoils: string[] } => {
@@ -141,7 +146,7 @@ export namespace Parsers {
       curr: InfantryWeapon
     ): ParsedInfantryWeapons => ({
       weapons: [...weapons, ...renderWeapon(curr)],
-      recoils: [...recoils, ...renderRecoil(curr)]
+      recoils: [cfgRecoilsBaseClasses, ...recoils, ...renderRecoil(curr)]
     });
 
     const records: InfantryWeapon[] = rows

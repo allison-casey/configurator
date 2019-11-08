@@ -8,6 +8,72 @@
 /// <reference path="./parsers/vehicleWeapons.ts" />
 /// <reference path="./utils.ts" />
 
+const cfgWeaponsBaseClasses = `
+class Default;
+class Rifle_Base_F;
+class Rifle_Short_Base_F: Rifle_Base_F {};
+class Rifle_Long_Base_F: Rifle_Base_F {};
+class PistolCore;
+class Pistol: PistolCore
+{
+    opticsZoomMin=0.5;
+    opticsZoomMax=0.5;
+    opticsZoomInit=0.5;
+};
+class Pistol_Base_F: Pistol
+{
+    class WeaponSlotsInfo;
+    opticsZoomMin=0.5;
+    opticsZoomMax=0.5;
+    opticsZoomInit=0.5;
+};
+class ItemCore;
+class InventoryOpticsItem_Base_F;
+class LauncherCore;
+class Launcher: LauncherCore
+{
+    opticsZoomMin=0.5; // Zoomed-in value as a fraction of full FOV (i.e. smaller = more zoom). 0.75 = normal, 1 = slight fisheye, 0.5 = slight zoom
+    opticsZoomMax=0.5; // Zoomed-out value
+    opticsZoomInit=0.5; // Starting value
+};
+class Launcher_Base_F: Launcher {};
+class GrenadeLauncher: Default
+{
+    opticsZoomMin=0.5;
+    opticsZoomMax=0.5;
+    opticsZoomInit=0.5;
+};
+class UGL_F: GrenadeLauncher
+{
+    opticsZoomMin=0.5;
+    opticsZoomMax=0.5;
+    opticsZoomInit=0.5;
+};
+class RifleCore;
+class Rifle: RifleCore
+{
+    opticsZoomMin=0.5;
+    opticsZoomMax=0.5;
+    opticsZoomInit=0.5;
+};
+class Put: Default
+{
+    class PutMuzzle: Default
+    {
+        opticsZoomMin=0.5;
+        opticsZoomMax=0.5;
+        opticsZoomInit=0.5;
+    };
+};
+`
+
+const cfgPatchesBaseClasses = `
+class Mode_SemiAuto {};
+class Mode_Burst: Mode_SemiAuto {};
+class Mode_FullAuto: Mode_SemiAuto {};
+`
+
+
 const getNamedRange = (name: string, spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet) =>
   spreadsheet.getRangeByName(name).getDisplayValues();
 
@@ -42,6 +108,7 @@ function main() {
     ...Utils.renderClass("CfgRecoils", undefined, ...parsedInfantryWeapons.recoils),
     ...Utils.renderClass("CfgWeapons",
                          undefined,
+                         cfgWeaponsBaseClasses,
                          ...parsedInfantryWeapons.weapons,
                          ...parsedInfantryOptics,
                          ...parsedVehicleWeapons),
