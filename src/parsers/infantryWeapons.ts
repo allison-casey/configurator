@@ -146,13 +146,13 @@ export namespace Parsers {
       curr: InfantryWeapon
     ): ParsedInfantryWeapons => ({
       weapons: [...weapons, ...renderWeapon(curr)],
-      recoils: [cfgRecoilsBaseClasses, ...recoils, ...renderRecoil(curr)]
+      recoils: [...recoils, ...renderRecoil(curr)]
     });
 
     const records: InfantryWeapon[] = rows
       .filter((arr: string[]) => arr[0] != "")
       .map(to_record);
 
-    return records.reduce(parse, { weapons: [], recoils: [] });
+    return records.reduce(parse, { weapons: [], recoils: [cfgRecoilsBaseClasses] });
   };
 }
