@@ -42,7 +42,6 @@ test("Parse Ammo Settings", () => {
     ]
   ];
     expect(Parsers.parseAmmoSettings(settings)).toEqual([
-        "class CfgAmmo {",
         "class B_19mm_HE : BulletBase {",
         "hit = 20.0;",
         "indirectHit = 6.0;",
@@ -58,6 +57,5 @@ test("Parse Ammo Settings", () => {
         "indirectHit = 8.0;",
         "indirectHitRange = 0.2;",
         "};",
-        "};"
     ])
 });
