@@ -81,6 +81,7 @@ export namespace Parsers {
       (acc, cur): string[] => [...acc, ...render_record(to_record(cur))],
       []
     );
-    return ["class CfgAmmo {", ...out, "};"];
+    // return ["class CfgAmmo {", ...out, "};"];
+    return out;
   };
 }
