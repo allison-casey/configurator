@@ -5,11 +5,12 @@ import { Utils } from "../utils";
 export namespace Parsers {
   export type BasicSetting = [string, string];
 
-  const cfgBaseClasses = `
+  const cfgBaseClasses: string[] = `
   class Mode_SemiAuto {};
   class Mode_Burst: Mode_SemiAuto {};
   class Mode_FullAuto: Mode_SemiAuto {};
-  `
+`.split("\n")
+
   /**
    * Parses the basic data in the basic settings sheet.
    * @param settings array of key value pairs of type `BasicSetting`
@@ -43,7 +44,8 @@ export namespace Parsers {
       indent_level: 0,
       arr: []
     });
-    arr = [cfgBaseClasses, ...arr, ...Utils.fillArray(indent_level, "};")];
+    console.log(cfgBaseClasses);
+    arr = [...cfgBaseClasses, ...arr, ...Utils.fillArray(indent_level, "};")];
 
     return arr;
   };
