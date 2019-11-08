@@ -23,7 +23,7 @@ export namespace Utils {
     ...args: string[]
   ): string[] => {
     const out: string[] = [];
-    out.push(`Class ${classname} ` + (base ? `: ${base} {` : "{"));
+    out.push(`class ${classname} ` + (base ? `: ${base} {` : "{"));
     out.push(...args);
     out.push("};");
     return out;

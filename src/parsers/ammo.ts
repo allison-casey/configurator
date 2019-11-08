@@ -70,7 +70,7 @@ export namespace Parsers {
 
     const render_record = (record: AmmoRecord): string[] => {
       const out = [];
-      out.push(`Class ${record.classname} : ${record.base} {`);
+      out.push(`class ${record.classname} : ${record.base} {`);
       for (let key in record.settings) {
         out.push(`${key} = ${record.settings[key]};`);
       }
@@ -81,6 +81,6 @@ export namespace Parsers {
       (acc, cur): string[] => [...acc, ...render_record(to_record(cur))],
       []
     );
-    return ["Class CfgAmmo {", ...out, "};"];
+    return ["class CfgAmmo {", ...out, "};"];
   };
 }

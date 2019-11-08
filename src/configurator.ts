@@ -6,6 +6,7 @@
 /// <reference path="./parsers/infantryWeapons.ts" />
 /// <reference path="./parsers/vehicleArmor.ts" />
 /// <reference path="./parsers/vehicleWeapons.ts" />
+/// <reference path="./utils.ts" />
 
 const getNamedRange = (name: string, spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet) =>
   spreadsheet.getRangeByName(name).getDisplayValues();
@@ -21,21 +22,43 @@ function main() {
   const settingsInfantryWeapons = getNamedRange("settingsInfantryWeapons", spreadsheet);
   const settingsVehicleWeapons = getNamedRange("settingsVehicleWeapons", spreadsheet);
   const settingsVehicleArmor = getNamedRange("settingsVehicleArmor", spreadsheet);
+  const lookupSoldierHitpoints = getNamedRange("lookupSoldierHitpoints", spreadsheet)
 
 
   const parsedBasic = Parsers.parseBasicSettings(settingsBasic)
-  const parsedAmmo = Parsers.parseBasicSettings(settingsAmmo)
-  const parsedInfantryArmor = Parsers.parseBasicSettings(settingsInfantryArmor)
-  const parsedInfantryOptics = Parsers.parseBasicSettings(settingsInfantryOptics)
-  const parsedInfantryTypes = Parsers.parseBasicSettings(settingsInfantryTypes)
-  const parsedInfantryWeapons = Parsers.parseBasicSettings(settingsInfantryWeapons)
-  const parsedVehicleWeapons = Parsers.parseBasicSettings(settingsVehicleWeapons)
-  const parsedVehicleArmor = Parsers.parseBasicSettings(settingsVehicleArmor)
+  const parsedAmmo = Parsers.parseAmmoSettings(settingsAmmo)
+  const parsedInfantryArmor = Parsers.parseInfantryArmor(settingsInfantryArmor)
+  const parsedInfantryOptics = Parsers.parseInfantryOptics(settingsInfantryOptics)
+  const parsedInfantryTypes = Parsers.parseInfantryTypes(lookupSoldierHitpoints, settingsInfantryTypes)
+  const parsedInfantryWeapons = Parsers.parseInfantryWeapons(settingsInfantryWeapons)
+  const parsedVehicleWeapons = Parsers.parseVehicleWeapons(settingsVehicleWeapons)
+  // const parsedVehicleArmor = Parsers.parseBasicSettings(settingsVehicleArmor)
 
-  Logger.log(parsedBasic)
-  Logger.log(parsedAmmo)
+  Logger.log(parsedInfantryArmor)
 
-  // const parsedSettingsBasic = Parsers.parseBasicSettings(
+  const output: string[] = [
+    ...parsedBasic,
+    ...Utils.renderClass("CfgAmmo", undefined, ...parsedAmmo),
+    ...Utils.renderClass("CfgRecoils", undefined, ...parsedInfantryWeapons.recoils),
+    ...Utils.renderClass("CfgWeapons",
+                         undefined,
+                         ...parsedInfantryWeapons.weapons,
+                         ...parsedInfantryOptics,
+                         ...parsedVehicleWeapons),
+    ...Utils.renderClass("CfgVehicles",
+                         undefined,
+                         ...parsedInfantryArmor,
+                         ...parsedInfantryTypes)
+  ]
+
+  const outputSheet = spreadsheet.getSheetByName("Output");
+  const outputRange = outputSheet.getRange(1, 1, output.length);
+
+  const data: string[][] = output.map(row => [row])
+
+  outputRange.setValues(data)
+
+// const parsedSettingsBasic = Parsers.parseBasicSettings(
   //   settingsBasic as Parsers.BasicSetting[]
   // );
 

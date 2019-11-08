@@ -70,7 +70,7 @@ export namespace Parsers {
       ) =>
         hitpoints
           ? [
-              `Class ${key} {`,
+              `class ${key} {`,
               `armor=${hitpoints.armor};`,
               `passThrough=${hitpoints.passThrough};`,
               "};"
@@ -79,17 +79,17 @@ export namespace Parsers {
 
       let out: string[] = [];
 
-      out.push(`Class ${record.classname} : ${record.base} {`);
+      out.push(`class ${record.classname} : ${record.base} {`);
       out.push(`descriptionShort="${record.descriptionShort}";`);
-      out.push("Class ItemInfo : ItemInfo {");
+      out.push("class ItemInfo : ItemInfo {");
       out.push(`containerClass="${record.containerClass}";`);
       out.push(`mass=${record.mass};`);
 
-      out.push("Class HitpointsProtectionInfo {");
+      out.push("class HitpointsProtectionInfo {");
       out = [
         ...out,
         ...(record.bodyPassthrough
-          ? ["Class Body {", `passThrough=${record.bodyPassthrough};`, "};"]
+          ? ["class Body {", `passThrough=${record.bodyPassthrough};`, "};"]
           : [])
       ];
 
@@ -118,6 +118,13 @@ export namespace Parsers {
       return out;
     };
 
-    return renderRecord(toRecord(rows[0]));
+    const records = rows.filter(row => row[5]).map(toRecord);
+    return records.reduce<string[]>(
+      (accum: string[], curr: InfantryArmor) => [
+        ...accum,
+        ...renderRecord(curr)
+      ],
+      []
+    );
   };
 }

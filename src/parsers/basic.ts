@@ -20,9 +20,9 @@ export namespace Parsers {
       if (key && value == "") {
         let out: string[];
         if (indent_level > 1) {
-          out = ["};", `Class ${key} {`];
+          out = ["};", `class ${key} {`];
         } else {
-          out = [`Class ${key} {`];
+          out = [`class ${key} {`];
           indent_level++;
         }
         return { indent_level, arr: [...arr, ...out] };
