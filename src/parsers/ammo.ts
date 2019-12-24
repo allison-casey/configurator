@@ -42,10 +42,18 @@ export namespace Parsers {
       proximityExplosionDistance?: string;
     };
   }
+
+  interface Set {
+    [index: string]: boolean;
+  }
+
   /**
    * Parses the Ammo Sheet
    */
   export const parseAmmoSettings = (settings: AmmoSetting[]): string[] => {
+    const definedBaseClasses: Set = {}
+    const externalBaseClasses: Set = {}
+
     const to_record = (setting: AmmoSetting): AmmoRecord => ({
       classname: setting[0],
       base: setting[1],
@@ -69,6 +77,10 @@ export namespace Parsers {
     });
 
     const render_record = (record: AmmoRecord): string[] => {
+      definedBaseClasses[record.classname] = true;
+      if (record.base && !(record.base in definedBaseClasses))
+        externalBaseClasses[record.base] = true;
+
       const out = [];
       out.push(`class ${record.classname} : ${record.base} {`);
       for (let key in record.settings) {
@@ -82,6 +94,8 @@ export namespace Parsers {
       []
     );
     // return ["class CfgAmmo {", ...out, "};"];
-    return out;
+    // return out;
+    const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
+    return [...externalClassDefinitions, ...out];
   };
 }
