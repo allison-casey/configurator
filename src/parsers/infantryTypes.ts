@@ -96,7 +96,8 @@ export namespace Parsers {
       "HitDiaphragm: HitAbdomen": Utils.toBoolean(row[11]),
       "HitChest: HitDiaphragm": Utils.toBoolean(row[12]),
       "HitBody: HitChest": Utils.toBoolean(row[13]),
-      "HitArms: HitBody": Utils.toBoolean(row[14]),
+      "HitArms: HitBody"
+: Utils.toBoolean(row[14]),
       "HitHands: HitArms": Utils.toBoolean(row[15]),
       "HitLegs: HitHands": Utils.toBoolean(row[16]),
       "Incapacitated: HitLegs": Utils.toBoolean(row[17]),
@@ -107,6 +108,12 @@ export namespace Parsers {
       impactDamageMultiplier: Utils.toBoolean(row[22])
     });
 
+    interface Set {
+      [index: string]: boolean;
+    }
+
+    const definedBaseClasses: Set = {}
+    const externalBaseClasses: Set = {}
 
     const hitpoints = soldierHitpoints.reduce<SoldierHitpoints>(
       (accum, curr) => {
@@ -135,6 +142,10 @@ export namespace Parsers {
       hitpoints: SoldierHitpoints,
       record: InfantryType
     ): string[] => {
+      definedBaseClasses[record.classname] = true;
+      if (record.base && !(record.base in definedBaseClasses))
+        externalBaseClasses[record.base] = true;
+
       const renderHitpointsClass = (
         key: string,
         record: InfantryType,
@@ -195,12 +206,15 @@ export namespace Parsers {
 
     const records: InfantryType[] = rows.map(toRecord)
 
-    return records.reduce<string[]>(
+    let out = records.reduce<string[]>(
       (accum: string[], curr: InfantryType) => [
         ...accum,
         ...renderRecord(hitpoints, curr)
       ],
       []
     );
+
+    const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
+    return [...externalClassDefinitions, ...out];
   };
 }

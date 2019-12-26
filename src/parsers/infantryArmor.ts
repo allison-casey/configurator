@@ -30,6 +30,13 @@ export namespace Parsers {
       face?: HitpointsProtection;
     }
 
+    interface Set {
+      [index: string]: boolean;
+    }
+
+    const definedBaseClasses: Set = {}
+    const externalBaseClasses: Set = {}
+
     const parseHitpointsProtection = (
       classname: string,
       start: number,
@@ -64,6 +71,10 @@ export namespace Parsers {
     });
 
     const renderRecord = (record: InfantryArmor): string[] => {
+      definedBaseClasses[record.classname] = true;
+      if (record.base && !(record.base in definedBaseClasses))
+        externalBaseClasses[record.base] = true;
+
       const renderHitpointsProtection = (
         key: string,
         hitpoints: HitpointsProtection | undefined
@@ -119,12 +130,15 @@ export namespace Parsers {
     };
 
     const records = rows.filter(row => row[5]).map(toRecord);
-    return records.reduce<string[]>(
+    const out = records.reduce<string[]>(
       (accum: string[], curr: InfantryArmor) => [
         ...accum,
         ...renderRecord(curr)
       ],
       []
     );
+
+    const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
+    return [...externalClassDefinitions, ...out];
   };
 }

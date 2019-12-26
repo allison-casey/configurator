@@ -88,29 +88,28 @@ function main() {
 
   const parsedBasic = Parsers.parseBasicSettings(settingsBasic)
   const parsedAmmo = Parsers.parseAmmoSettings(settingsAmmo)
-  // const parsedInfantryArmor = Parsers.parseInfantryArmor(settingsInfantryArmor)
-  // const parsedInfantryOptics = Parsers.parseInfantryOptics(settingsInfantryOptics)
-  // const parsedInfantryTypes = Parsers.parseInfantryTypes(lookupSoldierHitpoints, settingsInfantryTypes)
-  // const parsedInfantryWeapons = Parsers.parseInfantryWeapons(settingsInfantryWeapons)
-  // const parsedVehicleWeapons = Parsers.parseVehicleWeapons(settingsVehicleWeapons)
+  const parsedInfantryArmor = Parsers.parseInfantryArmor(settingsInfantryArmor)
+  const parsedInfantryOptics = Parsers.parseInfantryOptics(settingsInfantryOptics)
+  const parsedInfantryTypes = Parsers.parseInfantryTypes(lookupSoldierHitpoints, settingsInfantryTypes)
+  const parsedInfantryWeapons = Parsers.parseInfantryWeapons(settingsInfantryWeapons)
+  const parsedVehicleWeapons = Parsers.parseVehicleWeapons(settingsVehicleWeapons)
   // const parsedVehicleArmor = Parsers.parseBasicSettings(settingsVehicleArmor)
 
-  Logger.log(parsedAmmo)
 
   const output: string[] = [
     ...parsedBasic,
     ...Utils.renderClass("CfgAmmo", undefined, ...parsedAmmo),
-    // ...Utils.renderClass("CfgRecoils", undefined, ...parsedInfantryWeapons.recoils),
-    // ...Utils.renderClass("CfgWeapons",
-    //                      undefined,
-    //                      ...cfgWeaponsBaseClasses.split("\n"),
-    //                      ...parsedInfantryWeapons.weapons,
-    //                      ...parsedInfantryOptics,
-    //                      ...parsedVehicleWeapons),
-    // ...Utils.renderClass("CfgVehicles",
-    //                      undefined,
-    //                      ...parsedInfantryArmor,
-    //                      ...parsedInfantryTypes)
+    ...Utils.renderClass("CfgRecoils", undefined, ...parsedInfantryWeapons.recoils),
+    ...Utils.renderClass("CfgWeapons",
+                         undefined,
+                         // ...cfgWeaponsBaseClasses.split("\n"),
+                         ...parsedInfantryWeapons.weapons,
+                         ...parsedInfantryOptics,
+                         ...parsedVehicleWeapons),
+    ...Utils.renderClass("CfgVehicles",
+                         undefined,
+                         ...parsedInfantryArmor,
+                         ...parsedInfantryTypes)
   ]
 
   const outputSheet = spreadsheet.getSheetByName("Output");
