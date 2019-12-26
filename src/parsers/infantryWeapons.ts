@@ -35,6 +35,12 @@ export namespace Parsers {
     };
   }
 
+  interface Set {
+    [index: string]: boolean;
+  }
+
+  const definedBaseClasses: Set = {}
+  const externalBaseClasses: Set = {}
 
   const cfgRecoilsBaseClasses: string = "class Default;"
 
@@ -83,6 +89,10 @@ export namespace Parsers {
     });
 
     const renderWeapon = (weapon: InfantryWeapon): string[] => {
+      definedBaseClasses[weapon.classname] = true;
+      if (weapon.base && !(weapon.base in definedBaseClasses))
+        externalBaseClasses[weapon.base] = true;
+
       const settings: string[] = [];
       settings.push(`class ${weapon.classname}: ${weapon.base} {`);
       for (let key in weapon.setting) {
@@ -151,6 +161,11 @@ export namespace Parsers {
       .filter((arr: string[]) => arr[0] != "")
       .map(to_record);
 
-    return records.reduce(parse, { weapons: [], recoils: [cfgRecoilsBaseClasses] });
+    let out = records.reduce(parse, { weapons: [], recoils: [cfgRecoilsBaseClasses] });
+
+    const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
+
+    return {...out, weapons: [...externalClassDefinitions, ...out.weapons]}
+
   };
 }

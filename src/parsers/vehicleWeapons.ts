@@ -26,6 +26,13 @@ interface VehicleWeapons {
 export namespace Parsers {
   export const parseVehicleWeapons = (rows: string[][]): string[] => {
 
+    interface Set {
+      [index: string]: boolean;
+    }
+
+    const definedBaseClasses: Set = {}
+    const externalBaseClasses: Set = {}
+
     const toFireMode = (start: number, row: string[]): FireMode => ({
       modeName: row[start],
       ...(row[start + 1] && { reloadTime: row[start + 1] }),
@@ -106,12 +113,21 @@ export namespace Parsers {
       {}
     );
 
-    return Object.keys(lookup).reduce((accum: string[], curr: string) => {
+    let out = Object.keys(lookup).reduce((accum: string[], curr: string) => {
       const value = lookup[curr];
+
+      definedBaseClasses[value.classname] = true;
+      if (value.base && !(value.base in definedBaseClasses))
+        externalBaseClasses[value.base] = true;
+
       return [
         ...accum,
         ...Utils.renderClass(value.classname, value.base, ...value.parsed)
       ];
     }, []);
+
+    const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
+
+    return [...externalClassDefinitions, ...out]
   };
 }

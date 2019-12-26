@@ -20,6 +20,13 @@ export namespace Parsers {
       modeThree?: OpticMode;
     }
 
+    interface Set {
+      [index: string]: boolean;
+    }
+
+    const definedBaseClasses: Set = {}
+    const externalBaseClasses: Set = {}
+
     const toRecord = (row: string[]): InfantryOptic => ({
       classname: row[0],
       base: row[1],
@@ -57,6 +64,10 @@ export namespace Parsers {
     });
 
     const renderRecord = (record: InfantryOptic): string[] => {
+      definedBaseClasses[record.classname] = true;
+      if (record.base && !(record.base in definedBaseClasses))
+        externalBaseClasses[record.base] = true;
+
       const renderMode = (mode: OpticMode | undefined): string[] => {
         return mode
           ? [
@@ -98,12 +109,16 @@ export namespace Parsers {
     };
 
     const records = rows.filter(row => row[5]).map(toRecord);
-    return records.reduce<string[]>(
+    let out = records.reduce<string[]>(
       (accum: string[], curr: InfantryOptic) => [
         ...accum,
         ...renderRecord(curr)
       ],
       []
     );
+
+    const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
+    return [...externalClassDefinitions, ...out];
+
   };
 }
