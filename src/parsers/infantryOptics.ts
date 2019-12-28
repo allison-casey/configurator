@@ -25,7 +25,7 @@ export namespace Parsers {
     }
 
     const definedBaseClasses: Set = {}
-    const externalBaseClasses: Set = {}
+    const externalBaseClasses: Set = {InventoryOpticsItem_Base_F: true}
 
     const toRecord = (row: string[]): InfantryOptic => ({
       classname: row[0],
@@ -69,6 +69,12 @@ export namespace Parsers {
         externalBaseClasses[record.base] = true;
 
       const renderMode = (mode: OpticMode | undefined): string[] => {
+        if (mode) {
+          definedBaseClasses[mode.classname] = true;
+          if (mode.base && !(mode.base in definedBaseClasses))
+            externalBaseClasses[mode.base] = true;
+        }
+
         return mode
           ? [
               `class ${mode.classname} ` +
@@ -117,7 +123,9 @@ export namespace Parsers {
       []
     );
 
+
     const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
+
     return [...externalClassDefinitions, ...out];
 
   };
