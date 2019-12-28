@@ -103,6 +103,8 @@ export namespace Parsers {
         );
       }
 
+      if (weapon.single)
+        externalBaseClasses[weapon.single.base] = true;
       const single = weapon.single
         ? [
             `class Single: ${weapon.single.base} {`,
@@ -112,6 +114,8 @@ export namespace Parsers {
           ]
         : [];
 
+      if (weapon.auto)
+        externalBaseClasses[weapon.auto.base] = true;
       const auto = weapon.auto
         ? [
             `class FullAuto: ${weapon.auto.base} {`,
@@ -121,6 +125,8 @@ export namespace Parsers {
           ]
         : [];
 
+      if (weapon.burst)
+        externalBaseClasses[weapon.burst.base] = true;
       const burst = weapon.burst
         ? [
             `class Burst: ${weapon.burst.base} {`,
