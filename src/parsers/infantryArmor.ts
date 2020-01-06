@@ -4,7 +4,7 @@
 import { Utils } from "../utils";
 
 export namespace Parsers {
-  export const parseInfantryArmor = (rows: string[][]): string[] => {
+  export const parseInfantryArmor = (rows: string[][]): {bases: string[], classes: string[]} => {
     interface HitpointsProtection {
       armor: string;
       passThrough: string;
@@ -35,7 +35,7 @@ export namespace Parsers {
     }
 
     const definedBaseClasses: Set = {}
-    const externalBaseClasses: Set = {}
+    const externalBaseClasses: Set = {"ItemInfo": true}
 
     const parseHitpointsProtection = (
       classname: string,
@@ -138,7 +138,10 @@ export namespace Parsers {
       []
     );
 
-    const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
-    return [...externalClassDefinitions, ...out];
+  //   const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
+  //   return [...externalClassDefinitions, ...out];
+
+    return {bases: Object.keys(externalBaseClasses), classes: out}
+
   };
 }

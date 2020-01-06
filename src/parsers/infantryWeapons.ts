@@ -39,14 +39,19 @@ export namespace Parsers {
     [index: string]: boolean;
   }
 
-  const definedBaseClasses: Set = {}
-  const externalBaseClasses: Set = {}
-
-  const cfgRecoilsBaseClasses: string = "class Default;"
+  interface Output {
+    weapons: { bases: string[]; classes: string[] };
+    recoils: { bases: string[]; classes: string[] };
+  }
 
   export const parseInfantryWeapons = (
     rows: string[][]
-  ): { weapons: string[]; recoils: string[] } => {
+  ): Output => {
+    const definedBaseClasses: Set = {};
+    const externalBaseClasses: Set = {};
+
+    const cfgRecoilsBaseClasses: string = "class Default;";
+
     const to_record = (row: string[]): InfantryWeapon => ({
       classname: row[0],
       base: row[1],
@@ -103,8 +108,7 @@ export namespace Parsers {
         );
       }
 
-      if (weapon.single)
-        externalBaseClasses[weapon.single.base] = true;
+      if (weapon.single) externalBaseClasses[weapon.single.base] = true;
       const single = weapon.single
         ? [
             `class Single: ${weapon.single.base} {`,
@@ -114,8 +118,7 @@ export namespace Parsers {
           ]
         : [];
 
-      if (weapon.auto)
-        externalBaseClasses[weapon.auto.base] = true;
+      if (weapon.auto) externalBaseClasses[weapon.auto.base] = true;
       const auto = weapon.auto
         ? [
             `class FullAuto: ${weapon.auto.base} {`,
@@ -125,8 +128,7 @@ export namespace Parsers {
           ]
         : [];
 
-      if (weapon.burst)
-        externalBaseClasses[weapon.burst.base] = true;
+      if (weapon.burst) externalBaseClasses[weapon.burst.base] = true;
       const burst = weapon.burst
         ? [
             `class Burst: ${weapon.burst.base} {`,
@@ -167,11 +169,19 @@ export namespace Parsers {
       .filter((arr: string[]) => arr[0] != "")
       .map(to_record);
 
-    let out = records.reduce(parse, { weapons: [], recoils: [cfgRecoilsBaseClasses] });
+    let out = records.reduce(parse, {
+      weapons: [],
+      recoils: []
+    });
 
-    const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
+    // const externalClassDefinitions = Object.keys(externalBaseClasses).map(
+    //   (clss: string) => `class ${clss};`
+    // );
 
-    return {...out, weapons: [...externalClassDefinitions, ...out.weapons]}
-
+    return {
+      weapons: { bases: Object.keys(externalBaseClasses), classes: out.weapons },
+      recoils: { bases: ['Default'], classes: out.recoils }
+    }
+    // return { ...out, weapons: [...externalClassDefinitions, ...out.weapons] };
   };
 }

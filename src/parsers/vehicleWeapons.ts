@@ -24,14 +24,18 @@ interface VehicleWeapons {
 }
 
 export namespace Parsers {
-  export const parseVehicleWeapons = (rows: string[][]): string[] => {
+  interface Output {
+    bases: string[];
+    classes: string[];
+  }
 
+  export const parseVehicleWeapons = (rows: string[][]): Output => {
     interface Set {
       [index: string]: boolean;
     }
 
-    const definedBaseClasses: Set = {}
-    const externalBaseClasses: Set = {}
+    const definedBaseClasses: Set = {};
+    const externalBaseClasses: Set = {};
 
     const toFireMode = (start: number, row: string[]): FireMode => ({
       modeName: row[start],
@@ -54,8 +58,18 @@ export namespace Parsers {
       ...(row[22] && { modeThree: toFireMode(22, row) })
     });
 
-    const renderFireMode = (record: FireMode): string[] =>
-      Utils.renderClass(
+    const renderFireMode = (record: FireMode): string[] => {
+      if (record.modeName) {
+        const [classname, base] = record.modeName
+          .split(":")
+          .map((x: string) => x.trim());
+
+        definedBaseClasses[classname] = true;
+        if (base && !(base in definedBaseClasses))
+          externalBaseClasses[base] = true;
+      }
+
+      return Utils.renderClass(
         record.modeName,
         undefined,
         ...Utils.renderProperties(
@@ -69,27 +83,56 @@ export namespace Parsers {
           record
         )
       );
+    };
 
     const renderRecord = (record: VehicleWeapons): string[] => {
-      return [
-        ...Utils.renderProperties(
-          ["reloadTime", "magazineReloadTime", "dispersion"],
-          record
-        ),
-        ...(record.ammoMode
-          ? Utils.renderClass(
-              record.ammoMode,
-              undefined,
-              ...(record.modeOne ? renderFireMode(record.modeOne) : []),
-              ...(record.modeTwo ? renderFireMode(record.modeTwo) : []),
-              ...(record.modeThree ? renderFireMode(record.modeThree) : [])
-            )
-          : [
-              ...(record.modeOne ? renderFireMode(record.modeOne) : []),
-              ...(record.modeTwo ? renderFireMode(record.modeTwo) : []),
-              ...(record.modeThree ? renderFireMode(record.modeThree) : [])
-            ])
-      ];
+      if (record.ammoMode) {
+        const [classname, base] = record.ammoMode
+          .split(":")
+          .map((x: string) => x.trim());
+
+        definedBaseClasses[classname] = true;
+        if (base && !(base in definedBaseClasses))
+          externalBaseClasses[base] = true;
+      }
+
+      return record.ammoMode
+        ? Utils.renderClass(
+            record.ammoMode,
+            undefined,
+            ...Utils.renderProperties(
+              ["reloadTime", "magazineReloadTime", "dispersion"],
+              record
+            ),
+            ...(record.modeOne ? renderFireMode(record.modeOne) : []),
+            ...(record.modeTwo ? renderFireMode(record.modeTwo) : []),
+            ...(record.modeThree ? renderFireMode(record.modeThree) : [])
+          )
+        : [
+            ...(record.modeOne ? renderFireMode(record.modeOne) : []),
+            ...(record.modeTwo ? renderFireMode(record.modeTwo) : []),
+            ...(record.modeThree ? renderFireMode(record.modeThree) : [])
+          ];
+
+      // return [
+      //   ...Utils.renderProperties(
+      //     ["reloadTime", "magazineReloadTime", "dispersion"],
+      //     record
+      //   ),
+      //   ...(record.ammoMode
+      //     ? Utils.renderClass(
+      //         record.ammoMode,
+      //         undefined,
+      //         ...(record.modeOne ? renderFireMode(record.modeOne) : []),
+      //         ...(record.modeTwo ? renderFireMode(record.modeTwo) : []),
+      //         ...(record.modeThree ? renderFireMode(record.modeThree) : [])
+      //       )
+      //     : [
+      //         ...(record.modeOne ? renderFireMode(record.modeOne) : []),
+      //         ...(record.modeTwo ? renderFireMode(record.modeTwo) : []),
+      //         ...(record.modeThree ? renderFireMode(record.modeThree) : [])
+      //       ])
+      // ];
     };
 
     const records: VehicleWeapons[] = rows.map(toRecord);
@@ -126,8 +169,11 @@ export namespace Parsers {
       ];
     }, []);
 
-    const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
-
-    return [...externalClassDefinitions, ...out]
+    return {
+      bases: Object.keys(externalBaseClasses).filter(
+        x => !(x in definedBaseClasses)
+      ),
+      classes: out
+    };
   };
 }

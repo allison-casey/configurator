@@ -44,7 +44,7 @@ export namespace Parsers {
       indent_level: 0,
       arr: []
     });
-    console.log(cfgBaseClasses);
+    // arr = [...cfgBaseClasses, ...arr, ...Utils.fillArray(indent_level, "};")];
     arr = [...cfgBaseClasses, ...arr, ...Utils.fillArray(indent_level, "};")];
 
     return arr;

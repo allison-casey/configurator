@@ -7,119 +7,126 @@
 /// <reference path="./parsers/vehicleArmor.ts" />
 /// <reference path="./parsers/vehicleWeapons.ts" />
 /// <reference path="./utils.ts" />
+/// <reference path="./weaponBases.ts" />
 
-const cfgWeaponsBaseClasses = `
-class Default;
-class Rifle_Base_F;
-class Rifle_Short_Base_F: Rifle_Base_F {};
-class Rifle_Long_Base_F: Rifle_Base_F {};
-class PistolCore;
-class Pistol: PistolCore
-{
-    opticsZoomMin=0.5;
-    opticsZoomMax=0.5;
-    opticsZoomInit=0.5;
-};
-class Pistol_Base_F: Pistol
-{
-    class WeaponSlotsInfo;
-    opticsZoomMin=0.5;
-    opticsZoomMax=0.5;
-    opticsZoomInit=0.5;
-};
-class ItemCore;
-class InventoryOpticsItem_Base_F;
-class LauncherCore;
-class Launcher: LauncherCore
-{
-    opticsZoomMin=0.5; // Zoomed-in value as a fraction of full FOV (i.e. smaller = more zoom). 0.75 = normal, 1 = slight fisheye, 0.5 = slight zoom
-    opticsZoomMax=0.5; // Zoomed-out value
-    opticsZoomInit=0.5; // Starting value
-};
-class Launcher_Base_F: Launcher {};
-class GrenadeLauncher: Default
-{
-    opticsZoomMin=0.5;
-    opticsZoomMax=0.5;
-    opticsZoomInit=0.5;
-};
-class UGL_F: GrenadeLauncher
-{
-    opticsZoomMin=0.5;
-    opticsZoomMax=0.5;
-    opticsZoomInit=0.5;
-};
-class RifleCore;
-class Rifle: RifleCore
-{
-    opticsZoomMin=0.5;
-    opticsZoomMax=0.5;
-    opticsZoomInit=0.5;
-};
-class Put: Default
-{
-    class PutMuzzle: Default
-    {
-        opticsZoomMin=0.5;
-        opticsZoomMax=0.5;
-        opticsZoomInit=0.5;
-    };
-};
-`
-
-
-
-const getNamedRange = (name: string, spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet) =>
-  spreadsheet.getRangeByName(name).getDisplayValues();
+const getNamedRange = (
+  name: string,
+  spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet
+) => spreadsheet.getRangeByName(name).getDisplayValues();
 
 function main() {
   const spreadsheet = SpreadsheetApp.getActive();
 
   const settingsBasic = getNamedRange("settingsBasic", spreadsheet);
   const settingsAmmo = getNamedRange("settingsAmmo", spreadsheet);
-  const settingsInfantryArmor = getNamedRange("settingsInfantryArmor", spreadsheet);
-  const settingsInfantryOptics = getNamedRange("settingsInfantryOptics", spreadsheet);
-  const settingsInfantryTypes = getNamedRange("settingsInfantryTypes", spreadsheet);
-  const settingsInfantryWeapons = getNamedRange("settingsInfantryWeapons", spreadsheet);
-  const settingsVehicleWeapons = getNamedRange("settingsVehicleWeapons", spreadsheet);
-  const settingsVehicleArmor = getNamedRange("settingsVehicleArmor", spreadsheet);
-  const lookupSoldierHitpoints = getNamedRange("lookupSoldierHitpoints", spreadsheet)
+  const settingsInfantryArmor = getNamedRange(
+    "settingsInfantryArmor",
+    spreadsheet
+  );
+  const settingsInfantryOptics = getNamedRange(
+    "settingsInfantryOptics",
+    spreadsheet
+  );
+  const settingsInfantryTypes = getNamedRange(
+    "settingsInfantryTypes",
+    spreadsheet
+  );
+  const settingsInfantryWeapons = getNamedRange(
+    "settingsInfantryWeapons",
+    spreadsheet
+  );
+  const settingsVehicleWeapons = getNamedRange(
+    "settingsVehicleWeapons",
+    spreadsheet
+  );
+  const settingsVehicleArmor = getNamedRange(
+    "settingsVehicleArmor",
+    spreadsheet
+  );
+  const lookupSoldierHitpoints = getNamedRange(
+    "lookupSoldierHitpoints",
+    spreadsheet
+  );
 
-
-  const parsedBasic = Parsers.parseBasicSettings(settingsBasic)
-  const parsedAmmo = Parsers.parseAmmoSettings(settingsAmmo)
-  const parsedInfantryArmor = Parsers.parseInfantryArmor(settingsInfantryArmor)
-  const parsedInfantryOptics = Parsers.parseInfantryOptics(settingsInfantryOptics)
-  const parsedInfantryTypes = Parsers.parseInfantryTypes(lookupSoldierHitpoints, settingsInfantryTypes)
-  const parsedInfantryWeapons = Parsers.parseInfantryWeapons(settingsInfantryWeapons)
-  const parsedVehicleWeapons = Parsers.parseVehicleWeapons(settingsVehicleWeapons)
+  const parsedBasic = Parsers.parseBasicSettings(settingsBasic);
+  const parsedAmmo = Parsers.parseAmmoSettings(settingsAmmo);
+  const parsedInfantryArmor = Parsers.parseInfantryArmor(settingsInfantryArmor);
+  const parsedInfantryOptics = Parsers.parseInfantryOptics(
+    settingsInfantryOptics
+  );
+  const parsedInfantryTypes = Parsers.parseInfantryTypes(
+    lookupSoldierHitpoints,
+    settingsInfantryTypes
+  );
+  const parsedInfantryWeapons = Parsers.parseInfantryWeapons(
+    settingsInfantryWeapons
+  );
+  const parsedVehicleWeapons = Parsers.parseVehicleWeapons(
+    settingsVehicleWeapons
+  );
   // const parsedVehicleArmor = Parsers.parseBasicSettings(settingsVehicleArmor)
 
+  const removeDuplicates = (items: string[]) => {
+    const unique: { [index: string]: boolean } = {};
+    items.forEach((i: string) => {
+      if (!unique[i]) unique[i] = true;
+    });
 
+    return Object.keys(unique);
+  };
+
+  const renderBaseClass = (base: string) => `class ${base};`;
+
+  Logger.log(Bases.parsedCfgWeaponsBases);
   const output: string[] = [
     ...parsedBasic,
     ...Utils.renderClass("CfgAmmo", undefined, ...parsedAmmo),
-    ...Utils.renderClass("CfgRecoils", undefined, ...parsedInfantryWeapons.recoils),
-    ...Utils.renderClass("CfgWeapons",
-                         undefined,
-                         // ...cfgWeaponsBaseClasses.split("\n"),
-                         ...parsedInfantryWeapons.weapons,
-                         ...parsedInfantryOptics,
-                         ...parsedVehicleWeapons),
-    ...Utils.renderClass("CfgVehicles",
-                         undefined,
-                         ...parsedInfantryArmor,
-                         ...parsedInfantryTypes)
-  ]
+    ...Utils.renderClass(
+      "CfgRecoils",
+      undefined,
+      ...removeDuplicates(parsedInfantryWeapons.recoils.bases).map(
+        renderBaseClass
+      ),
+      ...parsedInfantryWeapons.recoils.classes
+    ),
+    ...Utils.renderClass(
+      "CfgWeapons",
+      undefined,
+      ...removeDuplicates([
+        ...parsedInfantryWeapons.weapons.bases,
+        ...parsedInfantryOptics.bases,
+        ...parsedVehicleWeapons.bases,
+      ])
+        .filter(
+          x => Bases.parsedCfgWeaponsBases.definedClasses.indexOf(x) == -1 &&
+            ["Mode_SemiAuto", "Mode_Burst", "Mode_FullAuto"].indexOf(x) == -1 
+        )
+        .map(renderBaseClass),
+      ...Bases.parsedCfgWeaponsBases.classes,
+      ...parsedInfantryWeapons.weapons.classes,
+      ...parsedInfantryOptics.classes,
+      ...parsedVehicleWeapons.classes
+    ),
+    ...Utils.renderClass(
+      "CfgVehicles",
+      undefined,
+      ...removeDuplicates([
+        ...parsedInfantryArmor.bases,
+        ...parsedInfantryTypes.bases
+      ]).map(renderBaseClass),
+      ...parsedInfantryArmor.classes,
+      ...parsedInfantryTypes.classes
+    )
+  ];
 
   const outputSheet = spreadsheet.getSheetByName("Output");
   const outputRange = outputSheet.getRange(1, 1, output.length);
 
-  const data: string[][] = output.map(row => [row])
+  const data: string[][] = output.map(row => [row]);
 
-  outputRange.setValues(data)
+  outputRange.setValues(data);
 
-// const parsedSettingsBasic = Parsers.parseBasicSettings(
+  // const parsedSettingsBasic = Parsers.parseBasicSettings(
   //   settingsBasic as Parsers.BasicSetting[]
   // );
 
