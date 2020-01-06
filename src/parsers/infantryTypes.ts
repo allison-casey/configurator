@@ -61,10 +61,12 @@ interface InfantryType {
 }
 
 export namespace Parsers {
+
+
   export const parseInfantryTypes = (
     soldierHitpoints: string[][],
     rows: string[][]
-  ): string[] => {
+  ): {bases: string[], classes: string[]} => {
 
     const toHitpointsCategory = (row: string[]): HitpointsCategory =>
       ({
@@ -113,7 +115,7 @@ export namespace Parsers {
     }
 
     const definedBaseClasses: Set = {}
-    const externalBaseClasses: Set = {}
+    const externalBaseClasses: Set = {"ViewPilot": true, }
 
     const hitpoints = soldierHitpoints.reduce<SoldierHitpoints>(
       (accum, curr) => {
@@ -214,7 +216,10 @@ export namespace Parsers {
       []
     );
 
-    const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
-    return [...externalClassDefinitions, ...out];
+    // const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
+    // return [...externalClassDefinitions, ...out];
+
+    return {bases: Object.keys(externalBaseClasses), classes: out}
+
   };
 }

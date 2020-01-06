@@ -1,5 +1,10 @@
 export namespace Parsers {
-  export const parseInfantryOptics = (rows: string[][]): string[] => {
+  interface Output {
+    bases: string[];
+    classes: string[];
+  }
+
+  export const parseInfantryOptics = (rows: string[][]): Output => {
     interface OpticMode {
       classname: string;
       base?: string;
@@ -23,6 +28,7 @@ export namespace Parsers {
     interface Set {
       [index: string]: boolean;
     }
+
 
     const definedBaseClasses: Set = {}
     const externalBaseClasses: Set = {InventoryOpticsItem_Base_F: true}
@@ -126,7 +132,11 @@ export namespace Parsers {
 
     const externalClassDefinitions = Object.keys(externalBaseClasses).map((clss: string) => `class ${clss};`)
 
-    return [...externalClassDefinitions, ...out];
+    return {
+      bases: Object.keys(externalBaseClasses),
+      classes: out
+    }
+    // return [...externalClassDefinitions, ...out];
 
   };
 }
