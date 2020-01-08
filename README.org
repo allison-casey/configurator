@@ -9,19 +9,33 @@ expects.
 
 
 ** Dependencies
-As it stands currently, /Configurator/ depends on both =Community Base Addons= and =SMA Weapons.= This may change in the future. 
+As it stands currently, /Configurator/ depends on both =Community Base Addons= and
+=SMA Weapons.= This may change in the future. 
+
 
 ** Usage
 *** Edit the Spreadsheet
-Open up the spreadsheet and start editing the values to your preference. Make sure to check the /Notes/ section for the constraints associated with each sheet. 
+Open up the spreadsheet and start editing the values to your preference. Make
+sure to check the /Notes/ section for the constraints associated with each sheet. 
+
 ***  Save the output
-When you feel that the =config= is to your liking, open up the /Script Editor/ by going to =Tools > Script Editor=. From here, run the AppScript component by pressing the play button on the toolbar. 
+When you feel that the =config= is to your liking, open up the /Script Editor/ by
+going to =Tools > Script Editor=. From here, run the AppScript component by
+pressing the play button on the toolbar. 
 
-When the script is done running, go back to the spreadsheet and open up the the =Output= sub-sheet. Assuming nothing went wrong, column =A= should now contain the resulting =config.cpp=.
 
-Select the whole column and copy it to your clipboard. Paste the config into a text file called =config.cpp= and save it, preferably into its own folder.
+When the script is done running, go back to the spreadsheet and open up the the
+=Output= sub-sheet. Assuming nothing went wrong, column =A= should now contain the
+resulting =config.cpp=.
+
+
+Select the whole column and copy it to your clipboard. Paste the config into a
+text file called =config.cpp= and save it, preferably into its own folder.
+
 *** Compile the Addon
-Now that we have the config ready to go, open /Arma 3 Tools/ and go to the /Binarize/ tool, you can use /armake2/ or /pboproject/ if you prefer.
+Now that we have the config ready to go, open /Arma 3 Tools/ and go to the
+/Binarize/ tool, you can use /armake2/ or /pboproject/ if you prefer.
+
 
 ** Notes
 *** Vehicle Weapons
