@@ -1,5 +1,12 @@
 *  Configurator
-/Configurator/ is a tool for quickly modifying values of all parts of /Arma 3/. The tool is comprised of two components, a Google Spreadsheet and a Google AppsScript Macro. The spreadsheet acts as a human-readable representation of many of the items and settings available in /Arma 3/ that can be edited as a normal spreadsheet. The AppsScript component then takes all of the definitions in the spreadsheet, and converts them into the =config.cpp= format that Arma expects. 
+/Configurator/ is a tool for quickly modifying values of all parts of /Arma 3/. The
+tool is comprised of two components, a Google Spreadsheet and a Google
+AppsScript Macro. The spreadsheet acts as a human-readable representation of
+many of the items and settings available in /Arma 3/ that can be edited as a
+normal spreadsheet. The AppsScript component then takes all of the definitions
+in the spreadsheet, and converts them into the =config.cpp= format that Arma
+expects. 
+
 
 ** Dependencies
 As it stands currently, /Configurator/ depends on both =Community Base Addons= and =SMA Weapons.= This may change in the future. 
