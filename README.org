@@ -6,7 +6,7 @@ As it stands currently, /Configurator/ depends on both =Community Base Addons= a
 
 ** Usage
 *** Edit the Spreadsheet
-Open up the spreadsheet and start editing the values to your preference. Make sure to check the [[Notes][Notes]] section for the constraints associated with each sheet. 
+Open up the spreadsheet and start editing the values to your preference. Make sure to check the /Notes/ section for the constraints associated with each sheet. 
 ***  Save the output
 When you feel that the =config= is to your liking, open up the /Script Editor/ by going to =Tools > Script Editor=. From here, run the AppScript component by pressing the play button on the toolbar. 
 
@@ -16,6 +16,12 @@ Select the whole column and copy it to your clipboard. Paste the config into a t
 *** Compile the Addon
 Now that we have the config ready to go, open /Arma 3 Tools/ and go to the /Binarize/ tool, you can use /armake2/ or /pboproject/ if you prefer.
 
+** Notes
+*** Vehicle Weapons
+   Vehicle Weapons with multiple ammo modes requires
+   classname to be non empty to be able to key off of
+   when parsing.
+   
 ** Todo
  - [X] Basic Settings
  - [X] Ammo
@@ -26,9 +32,3 @@ Now that we have the config ready to go, open /Arma 3 Tools/ and go to the /Bina
  - [X] Vehicle Weapons
  - [ ] Vehicle Armor
 
-** Notes
-*** Vehicle Weapons
-   Vehicle Weapons with multiple ammo modes requires
-   classname to be non empty to be able to key off of
-   when parsing.
-   
