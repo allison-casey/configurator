@@ -15,7 +15,7 @@ Addons= and =SMA Weapons.= This may change in the future.
 ** Usage
 *** Edit the Spreadsheet
 Open up the spreadsheet and start editing the values to your preference. Make
-sure to check the /Notes/ section for the constraints associated with each sheet. 
+sure to check the /*Notes*/ section for the constraints associated with each sheet. 
 
 ***  Save the output
 When you feel that the =config= is to your liking, open up the /Script Editor/ by
