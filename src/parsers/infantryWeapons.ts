@@ -145,8 +145,8 @@ export namespace Parsers {
       const out: string[] = [];
       out.push(`class ${weapon.setting.recoil}: Default {`);
       out.push(`muzzleOuter[]={${weapon.recoil.muzzleOuter.join(", ")}};`);
-      out.push(`permanent=${weapon.recoil.permanent}`);
-      out.push(`temporary=${weapon.recoil.temporary}`);
+      out.push(`permanent=${weapon.recoil.permanent};`);
+      out.push(`temporary=${weapon.recoil.temporary};`);
       out.push(`kickBack[]={${weapon.recoil.kickBack.join(", ")}};`);
       out.push("};");
       return out;
