@@ -95,8 +95,8 @@ export namespace Parsers {
 
       let out: string[] = [];
       out.push(`class ${record.classname}: ${record.base} {`);
-      out.push(`displayTitle='${record.displayTitle}';`);
-      out.push(`descriptionShort='${record.descriptionShort}';`);
+      out.push(`displayTitle="${record.displayTitle}";`);
+      out.push(`descriptionShort="${record.descriptionShort}";`);
       out.push("class ItemInfo: InventoryOpticsItem_Base_F {");
 
       out = [...out, ...(record.mass ? [`mass=${record.mass};`] : [])];
