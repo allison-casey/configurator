@@ -103,7 +103,7 @@ export namespace Parsers {
       for (let key in weapon.setting) {
         settings.push(
           key == "recoil"
-            ? `${key}='${weapon.setting[key]}';`
+            ? `${key}="${weapon.setting[key]}";`
             : `${key}=${weapon.setting[key]};`
         );
       }
