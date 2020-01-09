@@ -41,7 +41,7 @@ Start the /Arma 3/ launcher and enable =Configurator= in your mods list.
 
 ** Notes
 *** Vehicle Weapons
-   Vehicle Weapons with multiple ammo modes requires
+   Vehicle Weapons with multiple ammo modes requires the
    classname to be non empty to be able to key off of
    when parsing.
    
