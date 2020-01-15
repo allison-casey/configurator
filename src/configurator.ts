@@ -95,7 +95,7 @@ function main() {
       ...removeDuplicates([
         ...parsedInfantryWeapons.weapons.bases,
         ...parsedInfantryOptics.bases,
-        ...parsedVehicleWeapons.bases,
+        // ...parsedVehicleWeapons.bases,
       ])
         .filter(
           x => Bases.parsedCfgWeaponsBases.definedClasses.indexOf(x) == -1 &&
@@ -105,7 +105,7 @@ function main() {
       ...Bases.parsedCfgWeaponsBases.classes,
       ...parsedInfantryWeapons.weapons.classes,
       ...parsedInfantryOptics.classes,
-      ...parsedVehicleWeapons.classes
+      // ...parsedVehicleWeapons.classes
     ),
     ...Utils.renderClass(
       "CfgVehicles",

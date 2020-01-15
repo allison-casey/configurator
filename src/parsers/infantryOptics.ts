@@ -85,9 +85,9 @@ export namespace Parsers {
           ? [
               `class ${mode.classname} ` +
                 (mode.base ? `: ${mode.base} {` : "{"),
-              `minFOV=${mode.minFOV}`,
-              `initFOV=${mode.initFOV}`,
-              `maxFOV=${mode.maxFOV}`,
+              `opticsZoomMin=${mode.minFOV}`,
+              `opticsZoomInit=${mode.initFOV}`,
+              `opticsZoomMax=${mode.maxFOV}`,
               "};"
             ]
           : [];
