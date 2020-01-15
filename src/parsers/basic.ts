@@ -6,10 +6,10 @@ export namespace Parsers {
   export type BasicSetting = [string, string];
 
   const cfgBaseClasses: string[] = `
-  class Mode_SemiAuto {};
-  class Mode_Burst: Mode_SemiAuto {};
-  class Mode_FullAuto: Mode_SemiAuto {};
-`.split("\n")
+class Mode_SemiAuto {};
+class Mode_Burst: Mode_SemiAuto {};
+class Mode_FullAuto: Mode_SemiAuto {};
+`.trim().split("\n")
 
   /**
    * Parses the basic data in the basic settings sheet.
@@ -23,29 +23,35 @@ export namespace Parsers {
       { indent_level, arr }: Reducer,
       [key, value]: BasicSetting
     ): Reducer => {
-      if (key && value == "") {
         let out: string[];
-        if (indent_level > 1) {
-          out = ["};", `class ${key} {`];
-        } else {
+        if (key !== "" && value === "") {
           out = [`class ${key} {`];
-          indent_level++;
+        } else if (key === "" && value === "") {
+          out = ['};']
+        } else {
+          out = [`${key}=${value};`]
         }
-        return { indent_level, arr: [...arr, ...out] };
-      } else if (key == "" && value == "") {
-        const dedents: string[] = Utils.fillArray(indent_level, "};");
-        indent_level = 0;
-        return { indent_level, arr: [...arr, ...dedents] };
-      } else {
-        return { indent_level, arr: [...arr, `${key} = ${value};`] };
+        return {indent_level, arr: [...arr, ...out]}
+      //   if (indent_level > 1) {
+      //     out = ["};", `class ${key} {`];
+      //   } else {
+      //     out = [`class ${key} {`];
+      //     indent_level++;
+      //   }
+      //   return { indent_level, arr: [...arr, ...out] };
+      // } else if (key == "" && value == "") {
+      //   const dedents: string[] = Utils.fillArray(indent_level, "};");
+      //   indent_level = 0;
+      //   return { indent_level, arr: [...arr, ...dedents] };
+      // } else {
+      //   return { indent_level, arr: [...arr, `${key} = ${value};`] };
       }
-    };
     let { indent_level, arr } = settings.reduce(parse, {
       indent_level: 0,
       arr: []
     });
     // arr = [...cfgBaseClasses, ...arr, ...Utils.fillArray(indent_level, "};")];
-    arr = [...cfgBaseClasses, ...arr, ...Utils.fillArray(indent_level, "};")];
+    arr = [...arr, ...Utils.fillArray(indent_level, "};")];
 
     return arr;
   };
