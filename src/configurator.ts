@@ -95,28 +95,35 @@ function main() {
       ...removeDuplicates([
         ...parsedInfantryWeapons.weapons.bases,
         ...parsedInfantryOptics.bases,
+        ...parsedInfantryArmor.bases,
         // ...parsedVehicleWeapons.bases,
       ])
         .filter(
           x => Bases.parsedCfgWeaponsBases.definedClasses.indexOf(x) == -1 &&
-            ["Mode_SemiAuto", "Mode_Burst", "Mode_FullAuto"].indexOf(x) == -1 
+            ["Single",
+             "FullAuto",
+             "Burst",
+             "Mode_SemiAuto",
+             "Mode_Burst",
+             "Mode_FullAuto",
+             "Vest_NoCamo_Base",
+             "Vest_Camo_Base"].indexOf(x) == -1
         )
         .map(renderBaseClass),
       ...Bases.parsedCfgWeaponsBases.classes,
       ...parsedInfantryWeapons.weapons.classes,
       ...parsedInfantryOptics.classes,
+      ...parsedInfantryArmor.classes,
       // ...parsedVehicleWeapons.classes
     ),
-    ...Utils.renderClass(
-      "CfgVehicles",
-      undefined,
-      ...removeDuplicates([
-        ...parsedInfantryArmor.bases,
-        ...parsedInfantryTypes.bases
-      ]).map(renderBaseClass),
-      ...parsedInfantryArmor.classes,
-      ...parsedInfantryTypes.classes
-    )
+    // ...Utils.renderClass(
+    //   "CfgVehicles",
+    //   undefined,
+    //   ...removeDuplicates([
+    //     ...parsedInfantryTypes.bases
+    //   ]).map(renderBaseClass),
+    //   ...parsedInfantryTypes.classes
+    // )
   ];
 
   const outputSheet = spreadsheet.getSheetByName("Output");

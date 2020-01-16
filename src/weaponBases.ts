@@ -193,6 +193,11 @@ class SMA_CTar_BASE_F: SMA_556_RIFLEBASE
         class Single: Single {};        
         class FullAuto: FullAuto {};
 };
+class ItemCore;
+class VestItem;
+class UniformItem;
+class Vest_NoCamo_Base: ItemCore { class ItemInfo; }
+class Vest_Camo_Base: ItemCore { class ItemInfo; }
 `.split("\n");
 
   const parseCfgWeaponsBases = (classes: string[]): {undefinedBases: string[]; definedClasses: string[]} => {
