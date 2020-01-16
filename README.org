@@ -8,6 +8,12 @@ AppsScript component then takes all of the definitions in the
 spreadsheet, and converts them into the =config.cpp= format that Arma
 expects. 
 
+** Issues
+- =No entry 'CfgWeapons/ItemInfo.scope'=
+- =No Entry 'CfgVehicles/B_Soldier_03_f/Hitpoints/HitFace.name'=
+- =No Entry 'CfgVehicles/ViewPilot.side'=
+
+
 ** Dependencies
 As it stands currently, /Configurator/ depends on both =Community Base
 Addons= and =SMA Weapons=. This may change in the future. 

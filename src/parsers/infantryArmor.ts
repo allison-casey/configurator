@@ -35,7 +35,7 @@ export namespace Parsers {
     }
 
     const definedBaseClasses: Set = {}
-    const externalBaseClasses: Set = {"ItemInfo": true}
+    const externalBaseClasses: Set = {}
 
     const parseHitpointsProtection = (
       classname: string,
@@ -92,7 +92,11 @@ export namespace Parsers {
 
       out.push(`class ${record.classname} : ${record.base} {`);
       out.push(`descriptionShort="${record.descriptionShort}";`);
-      out.push("class ItemInfo : ItemInfo {");
+      if (record.descriptionShort.indexOf("Uniform") !== -1 ||
+          record.descriptionShort.indexOf("Outfit") !== -1)
+        out.push("class ItemInfo : UniformItem {")
+      else
+        out.push("class ItemInfo : ItemInfo {");
       out.push(`containerClass="${record.containerClass}";`);
       out.push(`mass=${record.mass};`);
 
